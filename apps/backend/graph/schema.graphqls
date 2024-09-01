@@ -1,15 +1,101 @@
-type User {
-  id: ID!
-  name: String!
-  email: String!
+schema {
+  query: Query
+  mutation: Mutation
 }
 
 type Query {
   users: [User!]!
   user(id: ID!): User
+  goals(userId: ID!): [Goal!]!
+  goal(id: ID!): Goal
+  records(goalId: ID!): [Record!]!
+  record(id: ID!): Record
+  posts(recordId: ID!): [Post!]!
+  post(id: ID!): Post
+  notifications(userId: ID!): [Notification!]!
 }
 
 type Mutation {
-  createUser(name: String!, email: String!): User!
-  deleteUser(id: ID!): Boolean!
+  createUser(name: String!, email: String!, password: String!): User!
+  createGoal(
+    userId: ID!
+    name: String!
+    description: String
+    startDate: Date!
+    endDate: Date!
+    repeatSetting: String
+    isPublic: Boolean!
+  ): Goal!
+  createRecord(
+    goalId: ID!
+    timestamp: DateTime!
+    photoURL: String!
+    comment: String
+  ): Record!
+  createPost(recordId: ID!, isPublic: Boolean!): Post!
+  followUser(followerId: ID!, followeeId: ID!): Follow!
+  likePost(postId: ID!, userId: ID!): Like!
 }
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  profilePicture: String
+  createdAt: Date!
+  goals: [Goal!]!
+  notifications: [Notification!]!
+}
+
+type Goal {
+  id: ID!
+  user: User!
+  name: String!
+  description: String
+  startDate: Date!
+  endDate: Date!
+  repeatSetting: String
+  isPublic: Boolean!
+  records: [Record!]!
+}
+
+type Record {
+  id: ID!
+  goal: Goal!
+  timestamp: DateTime!
+  photoURL: String!
+  comment: String
+  post: Post!
+}
+
+type Post {
+  id: ID!
+  record: Record!
+  createdAt: DateTime!
+  isPublic: Boolean!
+  likes: [Like!]!
+}
+
+type Follow {
+  id: ID!
+  follower: User!
+  followee: User!
+}
+
+type Like {
+  id: ID!
+  post: Post!
+  user: User!
+  likedAt: DateTime!
+}
+
+type Notification {
+  id: ID!
+  user: User!
+  type: String!
+  content: String!
+  createdAt: DateTime!
+}
+
+scalar Date
+scalar DateTime
