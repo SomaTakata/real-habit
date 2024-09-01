@@ -11,11 +11,18 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/SomaTakata/real-habit/apps/backend/graph"
+	"github.com/SomaTakata/real-habit/apps/backend/graph/model"
+	"github.com/joho/godotenv"
 )
 
 const defaultPort = "8080"
 
 func main() {
+    // godotenvを使って環境変数をロード
+    if err := godotenv.Load(); err != nil {
+        log.Printf("No .env file found: %v", err)
+    }
+
     port := os.Getenv("PORT")
     if port == "" {
         port = defaultPort
@@ -32,8 +39,12 @@ func main() {
         log.Fatalf("Failed to connect to database: %v", err)
     }
 
-    // ここでデータベースのマイグレーションや初期化を行う
-    // db.AutoMigrate(&YourModel{})
+
+    // データベースの自動マイグレーション
+	err = db.AutoMigrate(&model.User{}) // 必要に応じて他のモデルも追加
+	if err != nil {
+		log.Fatalf("Failed to run database migrations: %v", err)
+	}
 
     srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
         DB: db, // Resolverにデータベース接続を渡す
