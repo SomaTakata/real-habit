@@ -5,6 +5,8 @@ go 1.21.4
 require (
 	github.com/99designs/gqlgen v0.17.49
 	github.com/vektah/gqlparser/v2 v2.5.16
+	gorm.io/driver/postgres v1.5.9
+	gorm.io/gorm v1.25.11
 )
 
 require (
@@ -23,6 +25,4 @@ require (
 	golang.org/x/crypto v0.26.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/text v0.17.0 // indirect
-	gorm.io/driver/postgres v1.5.9 // indirect
-	gorm.io/gorm v1.25.11 // indirect
 )
