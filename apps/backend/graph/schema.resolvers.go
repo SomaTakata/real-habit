@@ -6,12 +6,13 @@ package graph
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/SomaTakata/real-habit/apps/backend/graph/model"
 )
 
 // CreateUser is the resolver for the createUser field.
-func (r *mutationResolver) CreateUser(ctx context.Context, name string, email string) (*model.User, error) {
+func (r *mutationResolver) CreateUser(ctx context.Context, name string, email string, password string) (*model.User, error) {
 	user := &model.User{Name: name, Email: email}
 	if err := r.DB.Create(user).Error; err != nil {
 		return nil, err
@@ -19,12 +20,29 @@ func (r *mutationResolver) CreateUser(ctx context.Context, name string, email st
 	return user, nil
 }
 
-// DeleteUser is the resolver for the deleteUser field.
-func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (bool, error) {
-	if err := r.DB.Delete(&model.User{}, id).Error; err != nil {
-		return false, err
-	}
-	return true, nil
+// CreateGoal is the resolver for the createGoal field.
+func (r *mutationResolver) CreateGoal(ctx context.Context, userID string, name string, description *string, startDate string, endDate string, repeatSetting *string, isPublic bool) (*model.Goal, error) {
+	panic(fmt.Errorf("not implemented: CreateGoal - createGoal"))
+}
+
+// CreateRecord is the resolver for the createRecord field.
+func (r *mutationResolver) CreateRecord(ctx context.Context, goalID string, timestamp string, photoURL string, comment *string) (*model.Record, error) {
+	panic(fmt.Errorf("not implemented: CreateRecord - createRecord"))
+}
+
+// CreatePost is the resolver for the createPost field.
+func (r *mutationResolver) CreatePost(ctx context.Context, recordID string, isPublic bool) (*model.Post, error) {
+	panic(fmt.Errorf("not implemented: CreatePost - createPost"))
+}
+
+// FollowUser is the resolver for the followUser field.
+func (r *mutationResolver) FollowUser(ctx context.Context, followerID string, followeeID string) (*model.Follow, error) {
+	panic(fmt.Errorf("not implemented: FollowUser - followUser"))
+}
+
+// LikePost is the resolver for the likePost field.
+func (r *mutationResolver) LikePost(ctx context.Context, postID string, userID string) (*model.Like, error) {
+	panic(fmt.Errorf("not implemented: LikePost - likePost"))
 }
 
 // Users is the resolver for the users field.
@@ -45,6 +63,41 @@ func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error
 	return &user, nil
 }
 
+// Goals is the resolver for the goals field.
+func (r *queryResolver) Goals(ctx context.Context, userID string) ([]*model.Goal, error) {
+	panic(fmt.Errorf("not implemented: Goals - goals"))
+}
+
+// Goal is the resolver for the goal field.
+func (r *queryResolver) Goal(ctx context.Context, id string) (*model.Goal, error) {
+	panic(fmt.Errorf("not implemented: Goal - goal"))
+}
+
+// Records is the resolver for the records field.
+func (r *queryResolver) Records(ctx context.Context, goalID string) ([]*model.Record, error) {
+	panic(fmt.Errorf("not implemented: Records - records"))
+}
+
+// Record is the resolver for the record field.
+func (r *queryResolver) Record(ctx context.Context, id string) (*model.Record, error) {
+	panic(fmt.Errorf("not implemented: Record - record"))
+}
+
+// Posts is the resolver for the posts field.
+func (r *queryResolver) Posts(ctx context.Context, recordID string) ([]*model.Post, error) {
+	panic(fmt.Errorf("not implemented: Posts - posts"))
+}
+
+// Post is the resolver for the post field.
+func (r *queryResolver) Post(ctx context.Context, id string) (*model.Post, error) {
+	panic(fmt.Errorf("not implemented: Post - post"))
+}
+
+// Notifications is the resolver for the notifications field.
+func (r *queryResolver) Notifications(ctx context.Context, userID string) ([]*model.Notification, error) {
+	panic(fmt.Errorf("not implemented: Notifications - notifications"))
+}
+
 // Mutation returns MutationResolver implementation.
 func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 
@@ -53,3 +106,4 @@ func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+
